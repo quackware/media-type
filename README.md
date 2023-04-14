@@ -4,4 +4,4 @@
   </a>
 </h1>
 
-<p align="center">Media type inference and utilities for unknown data</p>
+<p align="center">Media type inference and utilities</p>

@@ -1,5 +1,5 @@
 {
   "name": "@quackware/media-type",
-  "description": "Media type inference and utilities for unknown data",
+  "description": "Media type inference and utilities",
   "version": "0.0.1"
 }
