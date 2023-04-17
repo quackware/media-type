@@ -2,15 +2,21 @@ import { MediaType } from "../media-type.ts";
 import { assertEquals, assertExists, assertInstanceOf } from "./deps.ts";
 
 Deno.test("MediaType", async (t) => {
-  await t.step("fromMediaTypeString find MediaType instance for valid mediaType", () => {
-    const mt = MediaType.fromMediaTypeString("application/javascript");
+  await t.step("fromMediaType find MediaType instance for valid mediaType", () => {
+    const mt = MediaType.fromMediaType("application/javascript");
     assertExists(mt);
     assertInstanceOf(mt, MediaType);
   });
 
-  await t.step("fromMediaTypeString not find MediaType instance for invalid mediaType", () => {
-    const mt = MediaType.fromMediaTypeString("asd");
+  await t.step("fromMediaType not find MediaType instance for invalid mediaType", () => {
+    const mt = MediaType.fromMediaType("asd");
     assertEquals(mt, undefined);
+  });
+
+  await t.step("fromMediaType find MediaType instance for mediaType with parameter", () => {
+    const mt = MediaType.fromMediaType("text/plain;charset=utf-8");
+    assertExists(mt);
+    assertInstanceOf(mt, MediaType);
   });
 
   await t.step("fromExtension find MediaType instance for valid extension", () => {
@@ -21,7 +27,7 @@ Deno.test("MediaType", async (t) => {
   });
 
   await t.step("fromExtension not find MediaType instance for invalid extension", () => {
-    const mt = MediaType.fromMediaTypeString(".some-fake-extension");
+    const mt = MediaType.fromMediaType(".some-fake-extension");
     assertEquals(mt, undefined);
   });
 

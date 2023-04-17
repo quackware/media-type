@@ -1,14 +1,25 @@
 import { basename, Extension, extname, LiteralUnion } from "./deps.ts";
 import { KnownMediaType, KnownMediaTypeExtensions, MEDIA_TYPE_DATA } from "./media-type-data.ts";
 
-export class MediaType<T extends KnownMediaType> {
+export interface MediaTypeOptions<T extends KnownMediaType> {
+  readonly type: T;
+  readonly name: string;
+  readonly parameter?: string;
+}
+
+export class MediaType<T extends KnownMediaType = KnownMediaType> {
   static KNOWN_MEDIA_TYPES = MEDIA_TYPE_DATA.map(({ mediaType, name, extensions }) =>
     new MediaType(mediaType, name, extensions.slice())
   );
 
   /** Attempt to find a known {@linkcode MediaType} for the given {@linkcode mediaTypeString}. */
-  static fromMediaTypeString(mediaTypeString: LiteralUnion<KnownMediaType, string>) {
-    return MediaType.KNOWN_MEDIA_TYPES.find((t) => t.type === mediaTypeString);
+  static fromMediaType(mediaTypeString: LiteralUnion<KnownMediaType, string>) {
+    const found = MediaType.KNOWN_MEDIA_TYPES.find((t) => t.type === mediaTypeString);
+    if (!found) {
+      // There might be a parameter so try `startsWith`
+      return MediaType.KNOWN_MEDIA_TYPES.find((t) => mediaTypeString.startsWith(t.type));
+    }
+    return found;
   }
 
   /** Attempt to find a known {@linkcode MediaType} for the given {@linkcode ext}. */
